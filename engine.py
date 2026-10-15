@@ -2,16 +2,20 @@
 requests whose KV caches may have different lengths (left-padded)."""
 
 import torch
-from transformers import DynamicCache, GPT2LMHeadModel, GPT2Tokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, DynamicCache
 
-MODEL_NAME = "gpt2"
+MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
 
 
 class LLM:
-    def __init__(self, device=None):
+    def __init__(self, device=None, model_name=MODEL_NAME):
         self.device = device or ("mps" if torch.backends.mps.is_available() else "cpu")
-        self.tok = GPT2Tokenizer.from_pretrained(MODEL_NAME)
-        self.model = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device).eval()
+        self.tok = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(
+            model_name, dtype=torch.float16
+        ).to(self.device).eval()
+        if self.tok.pad_token_id is None:
+            self.tok.pad_token = self.tok.eos_token
         self.eos_id = self.tok.eos_token_id
 
     @torch.no_grad()

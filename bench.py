@@ -10,8 +10,8 @@ from schedulers import run_continuous, run_static
 from workload import generate_requests
 
 MAX_BATCH_SIZE = 4
-N_REQUESTS = 40
-RATES = [1.5, 3.0, 5.0, 8.0]  # requests/sec
+N_REQUESTS = 24
+RATES = [0.5, 1.0, 1.5, 2.5]  # requests/sec -- Qwen2.5-1.5B decodes much slower per step than GPT-2
 SEED = 42
 
 
