@@ -44,7 +44,7 @@ plt.savefig("results_summary.png", dpi=150)
 print("Saved results_summary.png")
 
 # --- Timeline / gantt chart at one rate, showing the "bubble" effect ---
-TARGET_RATE = 1.5
+TARGET_RATE = 0.6
 fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharex=True)
 for ax, sched in zip(axes, ["static", "continuous"]):
     row = next(r for r in by_sched[sched] if r["rate"] == TARGET_RATE)

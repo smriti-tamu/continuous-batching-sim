@@ -3,7 +3,7 @@
 A from-scratch implementation of the scheduling mechanism behind modern
 LLM inference servers (vLLM, TGI, TensorRT-LLM) — **continuous batching**
 — benchmarked against naive static batching under Poisson request arrivals.
-Qwen2.5-1.5B-Instruct on an M3 MacBook (PyTorch MPS backend, fp16).
+Qwen2.5-3B-Instruct on an M3 MacBook (PyTorch MPS backend, fp16).
 
 ## The problem
 
@@ -38,29 +38,29 @@ batching, not a prerequisite for the scheduling win shown here.
 
 ## Results
 
-24 requests, max batch size 4, Qwen2.5-1.5B-Instruct on M3 MPS:
+24 requests, max batch size 4, Qwen2.5-3B-Instruct on M3 MPS:
 
 | rate (req/s) | scheduler | throughput (tok/s) | latency p50 | mean queue wait |
 |---|---|---|---|---|
-| 1.0 | static | 28.3 | 7.82s | 5.91s |
-| 1.0 | continuous | 42.9 | 1.91s | 0.14s |
-| 2.5 | static | 29.9 | 13.77s | 9.97s |
-| 2.5 | continuous | 47.8 | 5.69s | 3.51s |
+| 0.6 | static | 16.9 | 19.53s | 10.75s |
+| 0.6 | continuous | 26.3 | 2.80s | 0.13s |
+| 1.5 | static | 18.0 | 22.43s | 16.35s |
+| 1.5 | continuous | 31.8 | 7.79s | 4.78s |
 
 ![throughput, latency, and queue wait vs. load](results_summary.png)
 
-Static batching's throughput plateaus around 30 tok/s regardless of load —
+Static batching's throughput plateaus around 18 tok/s regardless of load —
 it can't use spare capacity because admission is blocked until the whole
-batch finishes. Continuous batching reaches ~50 tok/s and keeps queue wait
+batch finishes. Continuous batching reaches ~32 tok/s and keeps queue wait
 close to zero until the system is genuinely saturated.
 
 The timeline (gray = queued, color = generating) makes it visible directly,
-at rate=1.5 req/s:
+at rate=0.6 req/s:
 
 ![per-request timeline](results_timeline.png)
 
-Static batching takes ~28s to clear the same 24 requests that continuous
-batching clears in ~17s — visible directly in how much longer the gray
+Static batching takes ~50s to clear the same 24 requests that continuous
+batching clears in ~33s — visible directly in how much longer the gray
 "waiting" bars are throughout the run.
 
 ## Running it

@@ -4,7 +4,7 @@ requests whose KV caches may have different lengths (left-padded)."""
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, DynamicCache
 
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+MODEL_NAME = "Qwen/Qwen2.5-3B-Instruct"
 
 
 class LLM:

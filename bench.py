@@ -11,7 +11,7 @@ from workload import generate_requests
 
 MAX_BATCH_SIZE = 4
 N_REQUESTS = 24
-RATES = [0.5, 1.0, 1.5, 2.5]  # requests/sec -- Qwen2.5-1.5B decodes much slower per step than GPT-2
+RATES = [0.3, 0.6, 1.0, 1.5]  # requests/sec -- Qwen2.5-3B decodes slower per step than the 1.5B model
 SEED = 42
 
 
